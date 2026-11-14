@@ -1,0 +1,19 @@
+node_modules/
+.deploy/
+.env
+.env.*
+!.env.example
+*.log
+.codex/
+.agents/
+.aws/
+
+# Local customer and account data; configure the payment QR again in the admin panel after deployment.
+data/payment-proofs/
+data/payment-settings.json
+data/visitor-register.json
+data/support-settings.json
+data/customer-support-contacts.json
+
+# Source dataset archive is not used by the website at runtime.
+data/community-gtfs.zip

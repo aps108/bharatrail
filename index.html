@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bharatrail - Indian Railway Train Search & Booking</title>
+<meta name="description" content="Search trains across India, compare fares, and manage your journey details.">
+<link rel="stylesheet" href="style.css?v=visible-partner-terms-button-20261114-2">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+<div class="nav-container">
+<div class="nav-logo" role="button" tabindex="0" aria-label="Bharatrail admin login" title="Admin login"><i class="fas fa-train"></i><span>Bharatrail</span></div>
+<button class="global-back" id="global-back" type="button" aria-label="Go back" title="Go back"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+<div class="nav-menu" id="nav-menu">
+<a href="#home" class="nav-link active">Home</a>
+<a href="#customer-support" class="nav-link">Customer Support</a>
+<a href="#train-status" class="nav-link">Train Status</a>
+<a href="#pnr" class="nav-link">PNR Status</a>
+</div>
+<div class="nav-actions"><button class="language-toggle" id="language-toggle" type="button" aria-label="Change language to Hindi">हिन्दी</button><button class="nav-btn" id="mobile-menu" aria-label="Toggle Navigation Menu"><i class="fas fa-bars"></i></button></div>
+</div>
+</nav>
+
+<!-- HOME PAGE SECTION -->
+<section id="home" class="hero">
+<div class="hero-container">
+<div class="hero-content">
+<h1>Search <span class="highlight">Trains</span> Across India</h1>
+<p>Explore train routes, scheduled stops, live status, fares, and seat availability across India.</p>
+<p class="visitor-data-notice"><a class="premium-support-link" href="#customer-support"><strong>Premium customer support</strong></a> We reserved 5 percent seat for our Premium customers can request help finding travel options through our customer support team. Availability depends on the train and date; Bharatrail does not guarantee reserved seats.</p>
+<div class="hero-stats">
+<div class="stat"><span class="stat-number" id="train-count-stat">12,980</span><span class="stat-label">Train schedules</span></div>
+<div class="stat"><span class="stat-number" id="station-count-stat">9,885</span><span class="stat-label">Station records</span></div>
+<div class="stat"><span class="stat-number">24/7</span><span class="stat-label">Journey Support</span></div>
+</div>
+</div>
+<div id="home-search" class="search-form-section">
+  <div class="container">
+    <div class="search-form-container">
+      <h2><i class="fas fa-search"></i> Find Your Train</h2>
+      <form id="train-search-form" class="search-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="from-station">From Station</label>
+            <input type="text" id="from-station" placeholder="Enter station name or code" required autocomplete="off">
+            <i class="fas fa-map-marker-alt form-icon"></i>
+            <div class="suggestions" id="from-suggestions"></div>
+          </div>
+          <div class="form-group">
+            <label for="to-station">To Station</label>
+            <input type="text" id="to-station" placeholder="Enter station name or code" required autocomplete="off">
+            <i class="fas fa-map-marker-alt form-icon"></i>
+            <div class="suggestions" id="to-suggestions"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="journey-date">Date of Journey</label>
+            <input type="date" id="journey-date" required>
+          </div>
+          <div class="form-group">
+            <label for="train-class">Preferred class</label>
+            <select id="train-class">
+              <option value="1A">AC 1-Tier (1A)</option>
+              <option value="2A">AC 2-Tier (2A)</option>
+              <option value="3A">AC 3-Tier (3A)</option>
+              <option value="3E">AC 3-Tier Economy (3E)</option>
+              <option value="SL">Sleeper (SL)</option>
+              <option value="CC">AC Chair Car (CC)</option>
+              <option value="EC">Executive Chair Car (EC)</option>
+              <option value="EA">Executive Anubhuti (EA)</option>
+              <option value="2S">Second Seating (2S)</option>
+              <option value="FC">First Class (FC)</option>
+              <option value="EV">Vistadome AC (EV)</option>
+              <option value="VC">Vistadome Chair Car (VC)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="train-quota">Quota</label>
+            <select id="train-quota">
+              <option value="GN">General (GN)</option>
+              <option value="TQ">Tatkal (TQ)</option>
+              <option value="PT">Premium Tatkal (PT)</option>
+              <option value="LD">Ladies (LD)</option>
+              <option value="SS">Lower Berth / Senior Citizen (SS)</option>
+              <option value="HP">Divyaang (HP)</option>
+              <option value="FT">Foreign Tourist (FT)</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="search-btn"><i class="fas fa-search"></i> Search Trains</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</section>
+
+<!-- LOADING PAGE SECTION -->
+<section id="loading-page" class="loading-section" style="display:none;">
+  <div class="container">
+    <div class="loading-card">
+      <div class="loading-icon">
+        <i class="fas fa-train"></i>
+      </div>
+      <h2>Bharatrail is finding trains for you</h2>
+      <p>Please wait while we search the best trains for your journey</p>
+      <div class="loading-progress">
+        <div class="loading-bar"></div>
+      </div>
+      <p class="loading-tip">Checking routes and availability...</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH RESULTS SECTION -->
+<section id="search" class="search-results-section" style="display:none;">
+  <div class="container">
+    <!-- Date Selector Bar - Day+Name same line, Status below -->
+    <div class="date-selector-bar" id="date-bar" role="group" aria-label="Choose journey date"></div>
+
+    <!-- Filters in single horizontal line -->
+    <div class="filters-bar">
+      <select id="filter-train-type">
+        <option value="all">Train Type</option>
+        <option value="Raj">Rajdhani (Raj)</option>
+        <option value="Shtb">Shatabdi (Shtb)</option>
+        <option value="JShtb">Jan Shatabdi (JShtb)</option>
+        <option value="Drnt">Duronto (Drnt)</option>
+        <option value="SF">Superfast (SF)</option>
+        <option value="Exp">Express (Exp)</option>
+        <option value="Express">Express</option>
+        <option value="Pass">Passenger (Pass)</option>
+        <option value="Mail">Mail</option>
+        <option value="GR">Garib Rath (GR)</option>
+        <option value="MEMU">MEMU</option>
+        <option value="DEMU">DEMU</option>
+        <option value="SKr">SKr</option>
+        <option value="Klkt">Klkt</option>
+        <option value="Hyd">Hyd</option>
+        <option value="Toy">Toy</option>
+        <option value="Del">Del</option>
+      </select>
+      <select id="filter-class">
+        <option value="3A">3A · AC 3-Tier (estimate)</option>
+        <option value="SL">SL · Sleeper (estimate)</option>
+        <option value="2A">2A · AC 2-Tier (estimate)</option>
+        <option value="1A">1A · AC 1-Tier (estimate)</option>
+        <option value="3E">3E · AC 3-Tier Economy (estimate)</option>
+        <option value="CC">CC · Chair Car (estimate)</option>
+        <option value="EC">EC · Executive Chair Car (estimate)</option>
+        <option value="2S">2S · Second Seating (estimate)</option>
+        <option value="FC">FC · First Class (estimate)</option>
+        <option value="EA">EA · Executive Anubhuti (estimate)</option>
+        <option value="EV">EV · Vistadome AC (estimate)</option>
+        <option value="VC">VC · Vistadome Chair Car (estimate)</option>
+      </select>
+      <select id="sort-trains">
+        <option value="all">Sort by</option>
+        <option value="departure">Departure</option>
+        <option value="arrival">Arrival</option>
+        <option value="duration">Duration</option>
+        <option value="price" disabled>Price data unavailable</option>
+      </select>
+    </div>
+
+    <div id="train-list" class="trains-list"></div>
+  </div>
+</section>
+
+<section id="customer-support" class="customer-support-section" style="display:none;">
+  <div class="container"><div class="customer-support-card"><p class="eyebrow">WE’RE HERE TO HELP</p><h2>Contact Customer Support</h2><p>Choose WhatsApp or call. Enter your phone number so our team can identify your request.</p><div class="support-contact-actions"><button type="button" class="support-contact-button" data-support-channel="whatsapp"><i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp support</button><button type="button" class="support-contact-button support-call-button" data-support-channel="call"><i class="fas fa-phone" aria-hidden="true"></i> Call support</button></div><form class="support-contact-form" hidden><label for="support-customer-phone-page">Your phone number (with country code)</label><div><input id="support-customer-phone-page" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210" required><button type="submit" class="support-contact-button">Continue</button></div><input type="hidden" name="channel"><small>Your number will be saved with the support agent number you are connected to.</small></form><p class="support-contact-status" role="status" aria-live="polite"></p></div></div>
+</section>
+
+<!-- TRAIN STATUS SECTION -->
+<section id="train-status" class="live-status-section" style="display:none;">
+  <div class="container">
+    <div class="status-search-card">
+      <form id="train-status-form" class="status-form">
+        <h2><i class="fas fa-train"></i> Live Train Running Status</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="train-number">Train Number</label>
+            <input type="text" id="train-number" placeholder="Enter 5-digit train number" required inputmode="numeric" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label for="status-date">Date</label>
+            <input type="date" id="status-date" required>
+          </div>
+        </div>
+        <button type="submit" class="status-btn">Check Status</button>
+      </form>
+    </div>
+    <div id="train-status-result" class="status-result" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- PNR SECTION -->
+<section id="pnr" class="pnr-section" style="display:none;">
+  <div class="container">
+    <div class="pnr-search-card">
+      <form id="pnr-form" class="pnr-form">
+        <h2><i class="fas fa-ticket-alt"></i> PNR Status</h2>
+        <div class="form-group">
+          <label for="pnr-number">PNR Number</label>
+          <input type="text" id="pnr-number" placeholder="Enter 10-digit PNR" required maxlength="10" inputmode="numeric">
+          <p class="form-hint">PNR is a 10-digit number found on your ticket</p>
+        </div>
+        <button type="submit" class="pnr-btn">Check PNR Status</button>
+      </form>
+    </div>
+    <div id="pnr-result" class="pnr-result" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- STATIONS SECTION -->
+<section id="stations" class="stations-section" style="display:none;">
+  <div class="container">
+    <h2>Stations</h2>
+    <div class="station-search">
+      <input type="text" id="station-search" placeholder="Search stations...">
+      <i class="fas fa-search station-search-icon"></i>
+    </div>
+    <div id="stations-list" class="stations-list"></div>
+  </div>
+</section>
+
+<!-- STATION SELECTION MODAL (Full screen like image) -->
+<div id="station-modal" class="station-modal" style="display:none;">
+  <div class="station-modal-overlay" onclick="closeStationModal()"></div>
+  <div class="station-modal-content">
+    <div class="station-modal-header">
+      <button class="station-modal-close" onclick="closeStationModal()">&times;</button>
+      <h3><i class="fas fa-train"></i> All Stations</h3>
+      <span id="station-modal-type"></span>
+    </div>
+    <div class="station-modal-search">
+      <input type="text" id="station-modal-search" placeholder="Search station...">
+      <i class="fas fa-search"></i>
+    </div>
+    <div id="station-modal-list" class="station-modal-list"></div>
+  </div>
+</div>
+
+<!-- Partners Section -->
+<section id="home-partners" class="partners-section">
+  <div class="container">
+    <h3 class="partner-heading">Powered By Partner Institutions</h3>
+    <div class="partner-logos">
+      <div class="partner-logo">
+        <i class="fas fa-train"></i>
+        <span>IRCT</span>
+      </div>
+      <div class="partner-logo">
+        <i class="fas fa-credit-card"></i>
+        <span>PAYTM</span>
+      </div>
+      <div class="partner-logo">
+        <i class="fas fa-mobile-alt"></i>
+        <span>UPI</span>
+      </div>
+      <div class="partner-logo">
+        <i class="fas fa-university"></i>
+        <span>BHMI</span>
+      </div>
+    </div>
+    <button type="button" class="terms-open-button" id="terms-open">Terms and Conditions</button>
+  </div>
+</section>
+
+<dialog class="terms-dialog" id="terms-dialog" aria-labelledby="terms-dialog-title">
+  <div class="terms-dialog-content">
+    <div class="terms-dialog-heading"><h2 id="terms-dialog-title">Terms and Conditions</h2><button type="button" id="terms-close" aria-label="Close terms">&times;</button></div>
+    <ul>
+      <li>Train schedules, routes, fares, and class details shown on Bharatrail are estimates and may be incomplete or out of date.</li>
+      <li>Bharatrail does not issue an official railway ticket or PNR. Submitting payment proof does not confirm a reservation or seat.</li>
+      <li>Verify current availability, final fare, and ticket details with an authorized railway ticketing provider.</li>
+      <li>Customer support can help find travel options, subject to the train and journey date; seats are not guaranteed.</li>
+      <li><strong>Website developer:</strong> Plyrandom’s founder and team build websites for clients. Plyrandom developed this website for its client and does not operate Bharatrail’s train information, ticketing, payment, or customer-support services. To the extent permitted by applicable law, Plyrandom is not responsible for financial losses arising from those services or transactions with third-party providers. Nothing in this statement excludes responsibility that cannot legally be excluded. Please contact Bharatrail or the relevant provider about booking, payment, or refund issues.</li>
+    </ul>
+    <button type="button" class="terms-done-button" id="terms-done">Close</button>
+  </div>
+</dialog>
+
+<!-- TRAVEL DETAILS / BOOKING PAGE -->
+<section id="travel-details" class="travel-details-section" style="display:none;">
+  <div class="container">
+    <div class="travel-card">
+      <div class="travel-header">
+        <button class="travel-back" onclick="goBack()" aria-label="Go back">&larr;</button>
+        <h2>Travel Details</h2>
+      </div>
+
+      <div id="booking-train-summary" class="booking-train-summary" hidden></div>
+
+      <div class="travel-section">
+        <h3>Add traveller details</h3>
+        <div id="travellers-container"></div>
+
+        <button class="save-traveller-btn" onclick="saveTraveller()">Save Traveller</button>
+      </div>
+
+      <div class="travel-section">
+        <h3>Contact details</h3>
+        <div id="proof-submit-status" class="proof-submit-status" role="status" aria-live="polite" hidden></div>
+        <p class="contact-hint">Your ticket will be sent to mobile number and email ID</p>
+        <p class="contact-hint">For abuse prevention and support, Bharatrail records your network IP and any phone number you provide here.</p>
+
+        <div class="form-group">
+          <label>Mobile Number</label>
+          <input type="tel" id="contact-mobile" placeholder="Enter mobile number" maxlength="10" inputmode="numeric" autocomplete="tel">
+        </div>
+
+        <div class="form-group">
+          <label>Email ID</label>
+          <input type="email" id="contact-email" placeholder="Enter email ID" autocomplete="email">
+        </div>
+
+        <button class="proceed-btn" onclick="proceedToBook()">Proceed to Book</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="script.js?v=full-site-fixes-20261114-1"></script>
+<script src="admin.js?v=full-site-fixes-20261114-1"></script>
+</body>
+</html>

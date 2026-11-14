@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "currency": "INR",
+  "method": "estimated_base_fare_per_km",
+  "distanceMultiplier": 1,
+  "classes": {
+    "2S": { "ratePerKm": 0.55, "minimum": 30 },
+    "SL": { "ratePerKm": 0.75, "minimum": 140 },
+    "3E": { "ratePerKm": 0.95, "minimum": 250 },
+    "3A": { "ratePerKm": 1.25, "minimum": 300 },
+    "2A": { "ratePerKm": 1.8, "minimum": 400 },
+    "1A": { "ratePerKm": 3.1, "minimum": 800 },
+    "CC": { "ratePerKm": 1.2, "minimum": 200 },
+    "EC": { "ratePerKm": 2.4, "minimum": 500 },
+    "EA": { "ratePerKm": 3.2, "minimum": 700 },
+    "FC": { "ratePerKm": 0.95, "minimum": 200 },
+    "EV": { "ratePerKm": 1.6, "minimum": 300 },
+    "VC": { "ratePerKm": 1.3, "minimum": 250 }
+  },
+  "disclaimer": "Approximate base fare only. This is an app estimate, not an Indian Railways or IRCTC fare. It excludes train-specific pricing, reservation and superfast charges, GST, Tatkal or dynamic pricing, concessions, and rounding. GTFS route distances are estimated from station coordinates."
+}
